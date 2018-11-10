@@ -1,0 +1,168 @@
+<header>
+	<link rel="stylesheet" type="text/css" href="console.css">
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+</header>
+<body>
+
+	<!-- 
+
+	How to build the layout? 
+
+	- vanilla css
+
+	What are the main components of the application?
+
+	- Console
+	- Input area
+		- The bottom of the console 
+		- Store the previous n inputs from the user to reuse commands
+	- Cheat sheet / glossary
+		- This would be really cool 
+		- Add shortcuts for pretty common actions 
+			- Google something and display first result 
+			- Open a website in a new tab 
+			- Send an email (that's a lot of work but maybe eventually)
+			- Etc, many many possiblities if I get a good handle on JavaScript
+
+
+	Startup flow
+
+	- Inital Load
+		- User Actions
+			- Enter username 
+		- Ellipsis loading
+			- Research 80s tech and make a skin of that 
+
+	-->
+
+	<!--=========================================================================
+			Console 
+			=========================================================================-->
+
+	<!-- 
+
+		This is an option for the display of the console
+
+		Could just add new lines each time depending on what command they type 
+
+	-->
+	<div id="output">
+		<p>
+		 hello. <br>
+		 i'm carl your console. <br>
+		 what's your name?
+		</p>
+	</div>
+
+	<div>
+		<!-- 
+			
+			This could also be where the console would live.
+
+			By adding more and more paragraphs one after another as children of the div 
+			a console style presentation could be achieved.
+
+			As each output was added the previous ones would remain until there is no more
+			room.
+
+			Once there was no more room each output would move the rest of the previous outputs
+			n rows where n is the number of rows of the new output.
+
+		-->
+
+	</div>
+
+	<!--=========================================================================
+				Input 
+
+				TODO:
+				
+				Style 
+					- Make the 
+				=========================================================================-->
+
+		<textarea id="user_input_box" rows="1" placeholder="enter command">
+			
+		</textarea>
+
+
+	<script>
+		let user_input_box = document.getElementById("user_input_box")
+
+		var commands = [
+			"Google:",
+			"Flipboard:"
+		]
+
+		var user_input_history = []
+
+		// add event listener when enter key is pressed on user input
+		user_input_box.addEventListener("keyup", function(event) {
+		    event.preventDefault();
+		    if (event.keyCode === 13) {
+		        onSubmit()
+		    }
+		});
+
+		// set initial focus on user input
+		user_input_box.focus()
+
+		// command parser
+		function onSubmit() {
+		    let user_input_box = document.getElementById("user_input_box")
+		    var output = document.getElementById("output")
+
+		    var user_input = user_input_box.value
+
+		    var command = validateCommand(user_input)
+		    console.log(command)
+		    
+		    if (command.valid == true) {
+		    	appendText(command.output_text)
+		    }
+		    else {
+		    	appendText(command.output_text)
+		    }
+
+		    user_input_box.value = ""
+		}
+
+		function validateCommand(user_input) {
+			command = {
+				valid: false,
+				input_text: "",
+				output_text: ""
+			}
+
+			command.input_text = user_input.replace(/\s/g, '')
+
+			var i
+			for (i = 0; i < commands.length; i++) {
+				console.log(command.input_text)
+				console.log(commands[i].replace(/\s/g, ''))
+				if (command.input_text === commands[i].replace(/\s/g, '')) {
+					 command.output_text = commands[i]
+					 command.valid = true
+					 
+					 return command
+				} else {
+					command.output_text = "invalid command"
+				}
+			}
+
+			return command
+		} 
+
+		function appendText(text) {
+			var text_node = document.createTextNode(text)
+	    var line_break = document.createElement("br")
+	    output.appendChild(line_break)
+	    output.appendChild(text_node)
+		}
+	</script>
+
+</body>
+
+
+
+
