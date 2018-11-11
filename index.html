@@ -32,6 +32,17 @@
 			- Enter username 
 		- Ellipsis loading
 			- Research 80s tech and make a skin of that 
+		- Prompt loads
+			- awaits input
+
+	APIs
+
+	- Google
+	- Flipboard
+
+	Future Ideas
+
+	- UI to build new actions / shortcuts
 
 	-->
 
@@ -50,7 +61,6 @@
 		<p>
 		 hello. <br>
 		 i'm carl your console. <br>
-		 what's your name?
 		</p>
 	</div>
 
@@ -118,32 +128,47 @@
 		    console.log(command)
 		    
 		    if (command.valid == true) {
-		    	appendText(command.output_text)
-		    }
-		    else {
+		    	appendText(command.name + " " + command.input_text)
+		    	window.open('https://www.google.com/search?q=' + command.input_text, '_blank');
+		    } else {
 		    	appendText(command.output_text)
 		    }
 
 		    user_input_box.value = ""
 		}
 
-		function validateCommand(user_input) {
-			command = {
+		function newCommand() {
+			return command = {
 				valid: false,
 				input_text: "",
-				output_text: ""
+				output_text: "",
+				name: ""
 			}
+		}
 
-			command.input_text = user_input.replace(/\s/g, '')
+		// Build a library of command objects that have an 
+		// command = {id, text, success response, failure response, help response}
+
+		// Build a function to handle what response is shown based on input
+
+		function validateCommand(user_input) {
+			
+			command = newCommand()
+
+			command.input_text = user_input
+			let parsed_text = command.input_text.replace(/\s/g, '')
 
 			var i
 			for (i = 0; i < commands.length; i++) {
-				console.log(command.input_text)
+				console.log(parsed_text)
 				console.log(commands[i].replace(/\s/g, ''))
-				if (command.input_text === commands[i].replace(/\s/g, '')) {
+				var parsed_command = commands[i]
+				if (parsed_text.startsWith(parsed_command.replace(/\s/g, '')) == true) {
 					 command.output_text = commands[i]
+					 command.name = commands[i]
+					 command.input_text = command.input_text.replace(commands[i], '')
 					 command.valid = true
-					 
+
 					 return command
 				} else {
 					command.output_text = "invalid command"
